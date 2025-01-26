@@ -22,11 +22,19 @@ public class Game {
 
     // Method to print the board
     public void printBoard() {
+        System.out.println("  0   1   2");
         for (int i = 0; i < 3; i++) {
+            System.out.print(i + " ");
             for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
+                System.out.print(board[i][j]);
+                if (j < 3 - 1) {
+                    System.out.print(" | ");
+                }
             }
             System.out.println();
+            if (i < 3 - 1) {
+                System.out.println("  ---------");
+            }
         }
     }
 
