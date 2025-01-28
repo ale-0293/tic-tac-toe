@@ -16,8 +16,9 @@ public class Main {
         while (playing) {
             System.out.println("\nMain Menu:");
             System.out.println("==============================");
-            System.out.println("1. Play Tic Tac Toe");
-            System.out.println("2. Exit");
+            System.out.println("1. Play against another player");
+            System.out.println("2. Play against the computer");
+            System.out.println("3. Exit");
             System.out.println("==============================");
             System.out.println("Choose an option: ");
 
@@ -25,9 +26,12 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    playGame(game, scanner); // Selection 1: Call the method to play
+                    playGame(game, scanner, false); // Selection 1: Call the method to play against another player
                     break;
                 case 2:
+                    playGame(game, scanner, true); // Selection 2: Call the method to play against computer
+                    break;    
+                case 3:
                     System.out.println("Goodbye!"); // Selection 2: Exit the cycle
                     playing = false;
                     break;
@@ -41,7 +45,7 @@ public class Main {
     }
 
     // Method to execute the main logic of the game
-    private static void playGame(Game game, Scanner scanner) {
+    private static void playGame(Game game, Scanner scanner, boolean vsComputer) {
         boolean keepPlaying = true; // Control for restarting the game
         
         while (keepPlaying){
@@ -52,6 +56,46 @@ public class Main {
                 System.out.println("\nCurrent Board:");
                 game.printBoard();
                 
+                if (!vsComputer || game.getCurrentPlayer() == 'X') {
+                    // Player turn
+                    System.out.println("Player " + game.getCurrentPlayer() + "'s turn.");
+                    System.out.print("Enter row (0, 1, 2): ");
+                    int row = scanner.nextInt();
+                    System.out.print("Enter column (0, 1, 2): ");
+                    int col = scanner.nextInt();
+
+                    if (game.makeMove(row, col)) {
+                        if (game.checkWinner()) {
+                            System.out.println("Player " + game.getCurrentPlayer() + "wins!");
+                            game.printBoard();
+                            gameRunning = false;
+                        } else if (game.isBoardFull()) {
+                            System.out.println("It's a draw!");
+                            game.printBoard();
+                            gameRunning = false;
+                        } else {
+                            game.switchPlayer();
+                        }
+                    } else {
+                        // Computer turn
+                        System.out.println("Computer's turn...");
+                        int[] move = game.getComputerMove();
+                        game.makeMove(move[0], move[1]);
+
+                        if(game.checkWinner()) {
+                            System.out.println("Computer wins!");
+                            game.printBoard();
+                            gameRunning = false;
+                        } else if (game.isBoardFull()) {
+                            System.out.println("It's a draw!");
+                            game.printBoard();
+                            gameRunning = false;
+                        } else {
+                            game.switchPlayer();
+                        }
+                    }
+                }
+
                 System.out.println("Player " + (game.getCurrentPlayer()) + "'s turn.");
                 System.out.print("Enter row (0, 1, 2): ");
                 int row = scanner.nextInt();

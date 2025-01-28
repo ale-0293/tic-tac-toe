@@ -1,4 +1,5 @@
 package logic;
+import java.util.Random; // Random number generator
 
 public class Game {
     private char[][] board; // Board
@@ -99,5 +100,18 @@ public class Game {
 
     public char getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    // COM player logic
+    public int[] getComputerMove() {
+        Random random = new Random();
+        int row, col;
+
+        do {
+            row = random.nextInt(3); // Random number between 0 and 2
+            col = random.nextInt(3); // Random number between 0 and 2
+        } while (board[row][col] != ' ');
+
+        return new int[] { row, col};
     }
 }
