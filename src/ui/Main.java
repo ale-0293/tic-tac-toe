@@ -48,7 +48,7 @@ public class Main {
     private static void playGame(Game game, Scanner scanner, boolean vsComputer) {
         boolean keepPlaying = true; // Control for restarting the game
         
-        while (keepPlaying){
+        while (keepPlaying) {
             game = new Game(); // Reset the board
             boolean gameRunning = true;
 
@@ -59,65 +59,41 @@ public class Main {
                 if (!vsComputer || game.getCurrentPlayer() == 'X') {
                     // Player turn
                     System.out.println("Player " + game.getCurrentPlayer() + "'s turn.");
-                    System.out.print("Enter row (0, 1, 2): ");
-                    int row = scanner.nextInt();
-                    System.out.print("Enter column (0, 1, 2): ");
-                    int col = scanner.nextInt();
+                    
+                    int row, col; 
+                    while (true) {
+                        System.out.print("Enter row (0, 1, 2): ");
+                        row = scanner.nextInt();
+                        System.out.print("Enter column (0, 1, 2): ");
+                        col = scanner.nextInt();
 
-                    if (game.makeMove(row, col)) {
-                        if (game.checkWinner()) {
-                            System.out.println("Player " + game.getCurrentPlayer() + "wins!");
-                            game.printBoard();
-                            gameRunning = false;
-                        } else if (game.isBoardFull()) {
-                            System.out.println("It's a draw!");
-                            game.printBoard();
-                            gameRunning = false;
+                        if (game.makeMove(row, col)) {
+                            break; // Valid move, exit loop
                         } else {
-                            game.switchPlayer();
+                            System.out.println("Invalid move! Try again.");
                         }
-                    } else {
-                        // Computer turn
-                        System.out.println("Computer's turn...");
-                        int[] move = game.getComputerMove();
-                        game.makeMove(move[0], move[1]);
-
-                        if(game.checkWinner()) {
-                            System.out.println("Computer wins!");
-                            game.printBoard();
-                            gameRunning = false;
-                        } else if (game.isBoardFull()) {
-                            System.out.println("It's a draw!");
-                            game.printBoard();
-                            gameRunning = false;
-                        } else {
-                            game.switchPlayer();
-                        }
-                    }
-                }
-
-                System.out.println("Player " + (game.getCurrentPlayer()) + "'s turn.");
-                System.out.print("Enter row (0, 1, 2): ");
-                int row = scanner.nextInt();
-                System.out.print("Enter column (0, 1, 2): ");
-                int col = scanner.nextInt();
-
-                if (game.makeMove(row, col)) {
-                    if (game.checkWinner()) {
-                        System.out.println("\n\u001B[34mPlayer " + game.getCurrentPlayer() + " wins!\u001B[0m");
-                        game.printBoard();
-                        gameRunning = false;
-                    } else if (game.isBoardFull()) {
-                        System.out.println("\nIt's a draw!");
-                        game.printBoard();
-                        gameRunning = false;
-                    } else {
-                        game.switchPlayer();
                     }
                 } else {
-                    System.out.println("Invalid move. Try again.");
+                    // Computer's turn (if applicable)
+                    System.out.println("Computer's turn...");
+                    int[] move = game.getComputerMove();
+                    game.makeMove(move[0], move[1]);
+                }
+
+                // Check if there is a winner
+                if (game.checkWinner()) {
+                    System.out.println("\n\u001B[34mPlayer " + game.getCurrentPlayer() + " wins!\u001B[0m");
+                    game.printBoard();
+                    gameRunning = false;
+                } else if (game.isBoardFull()) {
+                    System.out.println("\nIt's a draw!");
+                    game.printBoard();
+                    gameRunning = false;
+                } else {
+                    game.switchPlayer();
                 }
             }
+
             // Show the end-game-menu and select to restart or exit
             keepPlaying = showEndGameMenu(scanner);
         }

@@ -110,8 +110,8 @@ public class Game {
         do {
             row = random.nextInt(3); // Random number between 0 and 2
             col = random.nextInt(3); // Random number between 0 and 2
-        } while (board[row][col] != ' ');
+        } while (board[row][col] != '-');
 
-        return new int[] { row, col};
+        return new int[] {row, col};
     }
 }
